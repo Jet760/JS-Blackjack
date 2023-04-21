@@ -1,4 +1,5 @@
 body {
+    margin-top: 10%;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-image: url("images/table.jpg");
     background-size: cover;
@@ -15,3 +16,16 @@ h1 {
 #message-el {
     font-style: italic;
 }
+
+button {
+    background-color: goldenrod;
+    color: #016f32;
+    font-weight: bold;
+    border: none;
+    border-radius: 2px;
+    font-size: medium;
+    width: 150px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
