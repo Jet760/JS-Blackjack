@@ -96,7 +96,7 @@ function calculateDealerMove() {
         total += dealerCards[i]
     }
     dealerSum = total
-    if (dealerSum > 17){
+    if (dealerSum < 17){
         drawDealerCard()
         return true
     }
