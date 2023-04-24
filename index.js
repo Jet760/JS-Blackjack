@@ -106,33 +106,36 @@ function calculateDealerMove() {
 }
 
 function stand(){
-    isAlive = false
-    let loop = true
-    while (loop){
-        loop = calculateDealerMove()
-    }
-    dealerCardsEl.textContent = "Dealer Cards: "
-    for (let i = 0; i < dealerCards.length; i++){
-        dealerCardsEl.textContent += dealerCards[i] + " "
-    }
-    dealerSumEl.textContent = "Dealer Sum: " + dealerSum
+    if (isAlive && hasBlackjack === false) {
+        isAlive = false
+        let loop = true
+        while (loop){
+            loop = calculateDealerMove()
+        }
+        dealerCardsEl.textContent = "Dealer Cards: "
+        for (let i = 0; i < dealerCards.length; i++){
+            dealerCardsEl.textContent += dealerCards[i] + " "
+        }
+        dealerSumEl.textContent = "Dealer Sum: " + dealerSum
 
-    if (dealerSum > 21) {
-        message = "Dealer busts, you win!"
-        player.chips += 20
+        if (dealerSum > 21) {
+            message = "Dealer busts, you win!"
+            player.chips += 20
+        }
+        else if (dealerSum === sum) {
+            message = "Push!"
+        }
+        else if (dealerSum > sum) {
+            message = "Dealer wins"
+            player.chips -= 10
+        }
+        else if (dealerSum < sum) {
+            message = "You beat the dealer!"
+            player.chips += 20
+        }
+        messageEl.textContent = message
     }
-    else if (dealerSum === sum) {
-        message = "Push!"
-    }
-    else if (dealerSum > sum) {
-        message = "Dealer wins"
-        player.chips -= 10
-    }
-    else if (dealerSum < sum) {
-        message = "You beat the dealer!"
-        player.chips += 20
-    }
-    messageEl.textContent = message
+
 }
 
 
