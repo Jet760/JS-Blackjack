@@ -65,8 +65,8 @@ function renderGame(){
 function restartGame(){
     cards = []
     sum = ""
-    dealerCards = []
-    dealerSum = ""
+    dealerCardsEl.textContent = "Dealer Cards: "
+    dealerSumEl.textContent = "Dealer Sum: "
     renderGame()
     messageEl.textContent = "Want to play a round?"
     gameStarted = false
