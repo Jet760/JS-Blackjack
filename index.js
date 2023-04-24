@@ -1,24 +1,38 @@
-
-let firstCard = getRandomCard()
-let secondCard = getRandomCard()
-let cards = [firstCard, secondCard]
-let sum = firstCard + secondCard
+let cards = []
+let sum = 0
 let hasBlackjack = false
-let isAlive = true
+let isAlive = false
 let message = ""
 let messageEl = document.getElementById("message-el")
 let cardsEl = document.getElementById("cards-el")
 let sumEl = document.getElementById("sum-el")
 
+let player = {
+    name: "Player",
+    chips: 145
+}
+
+let playerEl = document.getElementById("player-el")
+playerEl.textContent = player.name + ": $" + player.chips
+
 function getRandomCard(){
-    return Math.floor((Math.random() * 11) + 1)
+    let number = Math.floor(Math.random() * 13) + 1
+    if (number > 10) {
+        return 10
+    }
+    else if (number === 1) {
+        return 11
+    }
+    else {return number}
 }
-
 function startGame(){
-    refreshGame()
+    isAlive = true
+    newCard()
+    newCard()
+    renderGame()
 }
 
-function refreshGame(){
+function renderGame(){
     cardsEl.textContent = "Cards: "
     for (let i = 0; i < cards.length; i++){
         cardsEl.textContent += cards[i] + " "
@@ -36,16 +50,24 @@ function refreshGame(){
     messageEl.textContent = message
 }
 
+function restartGame(){
+    cards = []
+    sum = ""
+    renderGame()
+}
+
 function newCard(){
-    console.log("drawing a new card from the deck")
-    let card = getRandomCard()
-    cards.push(card)
-    let total = 0
-    for (let i = 0; i < cards.length; i++) {
-        total += cards[i]
+    if (isAlive && hasBlackjack === false) {
+        let card = getRandomCard()
+        cards.push(card)
+        let total = 0
+        for (let i = 0; i < cards.length; i++) {
+            total += cards[i]
+        }
+        sum = total
+        renderGame()
     }
-    sum = total
-    refreshGame()
+
 }
 
 
