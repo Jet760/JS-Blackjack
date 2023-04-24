@@ -1,18 +1,22 @@
-let cards = []
-let sum = 0
-let hasBlackjack = false
-let isAlive = false
-let message = ""
-let messageEl = document.getElementById("message-el")
-let cardsEl = document.getElementById("cards-el")
-let sumEl = document.getElementById("sum-el")
-
 let player = {
     name: "Player",
     chips: 145
 }
-
+let cards = []
+let dealerCards = []
+let sum = 0
+let dealerSum = 0
+let hasBlackjack = false
+let isAlive = false
+let gameStarted = false
+let message = ""
+let messageEl = document.getElementById("message-el")
+let cardsEl = document.getElementById("cards-el")
+let sumEl = document.getElementById("sum-el")
 let playerEl = document.getElementById("player-el")
+let dealerCardsEl = document.getElementById("dealer-cards-el")
+let dealerSumEl = document.getElementById("dealer-sum-el")
+
 playerEl.textContent = player.name + ": $" + player.chips
 
 function getRandomCard(){
@@ -26,13 +30,19 @@ function getRandomCard(){
     else {return number}
 }
 function startGame(){
-    isAlive = true
-    newCard()
-    newCard()
-    renderGame()
+    if (gameStarted === false) {
+        isAlive = true
+        newCard()
+        newCard()
+        drawDealerCard()
+        drawDealerCard()
+        renderGame()
+        gameStarted = true
+    }
 }
 
 function renderGame(){
+    playerEl.textContent = player.name + ": $" + player.chips
     cardsEl.textContent = "Cards: "
     for (let i = 0; i < cards.length; i++){
         cardsEl.textContent += cards[i] + " "
@@ -42,9 +52,11 @@ function renderGame(){
         message = "Do you want to draw a new card?"
     } else if (sum === 21) {
         message = "Blackjack!"
+        player.chips += 25
         hasBlackjack = true
     } else {
         message = "You're out of the game"
+        player.chips -= 10
         isAlive = false
     }
     messageEl.textContent = message
@@ -53,7 +65,11 @@ function renderGame(){
 function restartGame(){
     cards = []
     sum = ""
+    dealerCards = []
+    dealerSum = ""
     renderGame()
+    messageEl.textContent = "Want to play a round?"
+    gameStarted = false
 }
 
 function newCard(){
@@ -67,8 +83,58 @@ function newCard(){
         sum = total
         renderGame()
     }
-
 }
+
+function drawDealerCard(){
+    let card = getRandomCard()
+    dealerCards.push(card)
+}
+
+function calculateDealerMove() {
+    let total = 0
+    for (let i = 0; i < dealerCards.length; i++) {
+        total += dealerCards[i]
+    }
+    dealerSum = total
+    if (dealerSum > 17){
+        drawDealerCard()
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+function stand(){
+    isAlive = false
+    let loop = true
+    while (loop){
+        loop = calculateDealerMove()
+    }
+    dealerCardsEl.textContent = "Dealer Cards: "
+    for (let i = 0; i < dealerCards.length; i++){
+        dealerCardsEl.textContent += dealerCards[i] + " "
+    }
+    dealerSumEl.textContent = "Dealer Sum: " + dealerSum
+
+    if (dealerSum > 21) {
+        message = "Dealer busts, you win!"
+        player.chips += 20
+    }
+    else if (dealerSum === sum) {
+        message = "Push!"
+    }
+    else if (dealerSum > sum) {
+        message = "Dealer wins"
+        player.chips -= 10
+    }
+    else if (dealerSum < sum) {
+        message = "You beat the dealer!"
+        player.chips += 20
+    }
+    messageEl.textContent = message
+}
+
 
 
 
